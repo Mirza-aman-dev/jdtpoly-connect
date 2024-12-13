@@ -236,7 +236,7 @@ export default function SignupScreen({ navigation }) {
                     <View style={styles.formAction}>
                       <TouchableOpacity>
                         <View style={styles.btn}>
-                            <Text style={styles.btnText}>Sign in</Text>
+                            <Text style={styles.btnText}>Sign in </Text>
                         </View>
                       </TouchableOpacity>
                     </View>
