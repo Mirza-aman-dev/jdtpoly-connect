@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }) {
     try {
       const email = `${form.regNo}@jdtpoly.com`;
       console.log(`email id is ${email}`);
-
+      
       const userCredential = await signInWithEmailAndPassword(auth, email, form.password);
       setIsLoading(false);
       console.log('User logged in', userCredential.user);
@@ -57,11 +57,12 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.ScrollViewStyle}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.header}>
             <Image
               alt="App Logo"
               resizeMode="contain"
@@ -126,23 +127,22 @@ export default function LoginScreen({ navigation }) {
               <Text style={styles.formLink}>Faculty Portal</Text>
             </TouchableOpacity>
           </View>
-      </ScrollView>
-      <Text style={{ textAlign: 'center', marginTop: 10 }} >
-        Didn't have an account? <Text style={{ textDecorationLine: 'underline', fontWeight: '500' }} >Signup</Text>
-      </Text>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      <TouchableOpacity onPress={() => { navigation.navigate('Signup'); }}>
+        <Text style={styles.formFooter}>
+          Don't have an account?{' '}
+          <Text style={{ textDecorationLine: 'underline' }}>Sign up</Text>
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'red',
-    paddingTop: 30,
-    paddingBottom: 15
-  },
-  ScrollViewStyle: {
-    // paddingVertical: 24,
+    paddingVertical: 24,
     flexGrow: 1,
     // flexShrink: 1,
     // flexBasis: 0,

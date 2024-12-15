@@ -1,25 +1,32 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, initializeAuth, inMemoryPersistence, setPersistence, getReactNativePersistence } from 'firebase/auth'; // Updated imports
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth'; // Updated imports
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import firebase from 'firebase/compat/app';
 
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAowCog2lUdvUdbcVv24PaJUTdwHMvQJhw",
-  authDomain: "jdtpoly-feb88.firebaseapp.com",
-  databaseURL: "https://jdtpoly-feb88-default-rtdb.firebaseio.com",
-  projectId: "jdtpoly-feb88",
-  storageBucket: "jdtpoly-feb88.firebasestorage.app",
-  messagingSenderId: "653087325199",
-  appId: "1:653087325199:web:e2c87639cf06973abbf77a",
-  measurementId: "G-BSF371JB28"
+  apiKey: "AIzaSyD_t8V9VnGEOzPZMO-bhNU7Ql-144d04gc",
+  authDomain: "beta-jdt-poly-connect.firebaseapp.com",
+  projectId: "beta-jdt-poly-connect",
+  storageBucket: "beta-jdt-poly-connect.firebasestorage.app",
+  messagingSenderId: "598002344540",
+  appId: "1:598002344540:web:1c43cdd017ad98cd7b7c99",
+  measurementId: "G-H4BNDHV5BF"
 };
 
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only if it's not already initialized
+let app;
+if (firebase.apps.length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = firebase.app(); // Use the default app if it's already initialized
+}
 
 // Initialize Firebase Auth with AsyncStorage for persistence
 const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage) // Use AsyncStorage for auth persistence
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
 
 // Initialize Firestore and Storage

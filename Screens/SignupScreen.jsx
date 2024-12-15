@@ -483,14 +483,14 @@
 //     { label: 'Merit Seat', value: 'merit' },
 //     { label: 'Other', value: 'Other' },
 //   ];
-//   const semOptions = [
-//     { label: '1', value: '1' },
-//     { label: '2', value: '2' },
-//     { label: '3', value: '3' },
-//     { label: '4', value: '4' },
-//     { label: '5', value: '5' },
-//     { label: '6', value: '6' },
-//   ];
+// const semOptions = [
+//   { label: '1', value: '1' },
+//   { label: '2', value: '2' },
+//   { label: '3', value: '3' },
+//   { label: '4', value: '4' },
+//   { label: '5', value: '5' },
+//   { label: '6', value: '6' },
+// ];
 
 //   const deptOptions = [
 //     { label: 'Computer Engineering', value: 'Computer Engineering' },
@@ -508,10 +508,10 @@
 //     setModalVisible(false);
 //   };
 
-//   const handleSemSelect = (sem) => {
-//     setForm({ ...form, sem });
-//     setModalVisible2(false);
-//   };
+// const handleSemSelect = (sem) => {
+//   setForm({ ...form, sem });
+//   setModalVisible2(false);
+// };
 
 //   const handleDeptSelect = (dept) => {
 //     setForm({ ...form, dept });
@@ -929,7 +929,7 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  SafeAreaView,
+  // SafeAreaView,
   View,
   Image,
   Text,
@@ -940,11 +940,15 @@ import {
   ScrollView,
   Platform,
   Modal,
+  Button,
 } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../Backend/Firebase/config'; // Update path if needed
+import { auth, db,storage } from '../Backend/Firebase/config'; 
 import { doc, setDoc } from 'firebase/firestore';
 import SelectDeptModal from '../Components/Modals/SelectDeptModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import SelectSemesterModal from '../Components/Modals/SelectSemesterModal';
 
 export default function SignupScreen({ navigation }) {
   const [form, setForm] = useState({
@@ -959,8 +963,23 @@ export default function SignupScreen({ navigation }) {
     sem: '',
   });
 
+  const [date, setDate] = useState(new Date());
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(false);
+    setDate(currentDate);
+    setForm({ ...form, dob:currentDate.toLocaleDateString()});  
+  };
+
+
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+  const [modalVisible3, setModalVisible3] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const showDatepicker = () => {
+    setShow(true);
+  };
   const quotaOptions = [
     { label: 'Management Seat', value: 'management' },
     { label: 'Orphanage Seat', value: 'orphanage' },
@@ -979,6 +998,15 @@ export default function SignupScreen({ navigation }) {
     { label: 'Mechanical Engineering', value: 'Mechanical Engineering' },
   ];
 
+  const semOptions = [
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+    { label: '5', value: '5' },
+    { label: '6', value: '6' },
+  ];
+
   const handleQuotaSelect = (quota) => {
     setForm({ ...form, quota });
     setModalVisible(false);
@@ -987,6 +1015,11 @@ export default function SignupScreen({ navigation }) {
   const handleDeptSelect = (dept) => {
     setForm({ ...form, dept });
     setModalVisible2(false);
+  };
+
+  const handleSemSelect = (sem) => {
+    setForm({ ...form, sem });
+    setModalVisible3(false);
   };
 
   const validateForm = () => {
@@ -1006,6 +1039,12 @@ export default function SignupScreen({ navigation }) {
     }
     return true;
   };
+
+  const testHandleButton = () => {
+    console.log(
+      form
+    );
+  }
 
   const handleSignup = async () => {
     if (!validateForm()) return;
@@ -1053,14 +1092,14 @@ export default function SignupScreen({ navigation }) {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0 }>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           <View style={styles.header}>
             <Image
               alt="App Logo"
               resizeMode="contain"
               style={styles.headerImg}
-              source={{ uri: 'https://assets.withfra.me/SignIn.2.png' }} 
+              source={{ uri: 'https://assets.withfra.me/SignIn.2.png' }}
             />
             <Text style={styles.title}>
               Sign up to <Text style={{ color: '#075eec' }}>JDT Connect </Text>
@@ -1103,6 +1142,52 @@ export default function SignupScreen({ navigation }) {
               />
             </View>
 
+            {/* Roll Number */}
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Student Roll Number</Text>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                keyboardType="numeric"
+                onChangeText={(rollNumber) => setForm({ ...form, rollNumber })}
+                placeholder="Enter Registration Number"
+                placeholderTextColor="#6b7280"
+                style={styles.inputControl}
+                value={form.rollNumber}
+              />
+            </View>
+
+            {/* Admission Number */}
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Student Admission Number</Text>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                keyboardType="numeric"
+                onChangeText={(admissionNumber) => setForm({ ...form, admissionNumber })}
+                placeholder="Enter Registration Number"
+                placeholderTextColor="#6b7280"
+                style={styles.inputControl}
+                value={form.admissionNumber}
+              />
+            </View>
+
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>DOB {date.toLocaleDateString()}   </Text>
+              <Button onPress={showDatepicker} title="Select Date" />
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
+            </View>
+
             {/* Admission Type */}
             <View style={styles.input}>
               <Text style={styles.inputLabel}>Admission Type</Text>
@@ -1118,13 +1203,26 @@ export default function SignupScreen({ navigation }) {
 
             {/* Department */}
             <View style={styles.input}>
-              <Text style={styles.inputLabel}>Department</Text>
+              <Text style={styles.inputLabel}>Department</Text> 
               <TouchableOpacity
                 style={styles.inputControl}
                 onPress={() => setModalVisible2(true)}
               >
                 <Text style={[styles.inputText, { color: form.dept ? '#222' : '#6b7280' }]}>
                   {form.dept || "Select Department"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Department */}
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Semester</Text>
+              <TouchableOpacity
+                style={styles.inputControl}
+                onPress={() => setModalVisible3(true)}
+              >
+                <Text style={[styles.inputText, { color: form.sem ? '#222' : '#6b7280' }]}>
+                  {form.sem || "Select Department"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1146,7 +1244,7 @@ export default function SignupScreen({ navigation }) {
 
             {/* Submit Button */}
             <View style={styles.formAction}>
-              <TouchableOpacity onPress={handleSignup}>
+              <TouchableOpacity onPress={handleSignup}>   
                 <View style={styles.btn}>
                   <Text style={styles.btnText}>Sign up</Text>
                 </View>
@@ -1197,6 +1295,12 @@ export default function SignupScreen({ navigation }) {
           setVisible={setModalVisible2}
           onHandle={handleDeptSelect}
         />
+        <SelectSemesterModal
+          data={semOptions}
+          visible={modalVisible3}
+          setVisible={setModalVisible3}
+          onHandle={handleSemSelect}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -1206,8 +1310,8 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 24,
     flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
+    // flexShrink: 1,
+    // flexBasis: 0,
   },
   title: {
     fontSize: 31,

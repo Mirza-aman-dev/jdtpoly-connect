@@ -37,11 +37,11 @@ export default function FacLoginScreen({ navigation }) {
     if (!validateInput()) return; // If input is invalid, return early
     setIsLoading(true);
     setErrorMessage('');
-
+  
     try {
       const email = `${form.regNo}@gmail.com`;
       console.log(`email id is ${email}`);
-      
+  
       const userCredential = await signInWithEmailAndPassword(auth, email, form.password);
       setIsLoading(false);  // Stop loading once login is successful
       console.log('User logged in', userCredential.user);
@@ -51,10 +51,12 @@ export default function FacLoginScreen({ navigation }) {
       if (error.code === 'auth/user-not-found') {
         setErrorMessage('No user found with this email');
       } else {
-        setErrorMessage('Login failed, please try again');
+        // Use error.message to get the error as a string
+        setErrorMessage(error.message);
       }
     }
   };
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
