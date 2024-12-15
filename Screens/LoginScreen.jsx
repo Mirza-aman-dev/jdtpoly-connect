@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }) {
     try {
       const email = `${form.regNo}@jdtpoly.com`;
       console.log(`email id is ${email}`);
-      
+
       const userCredential = await signInWithEmailAndPassword(auth, email, form.password);
       setIsLoading(false);
       console.log('User logged in', userCredential.user);
@@ -58,14 +58,184 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+      <ScrollView contentContainerStyle={styles.ScrollViewStyle}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+            <Image
+              alt="App Logo"
+              resizeMode="contain"
+              style={styles.headerImg}
+              source={{ uri: 'https://assets.withfra.me/SignIn.2.png' }} />
+
+            <Text style={styles.title}>
+              Sign in to <Text style={{ color: '#075eec' }}>JDT Connect </Text>
+            </Text>
+
+            <Text style={styles.subtitle}>
+              Connect with JDT Polytechnic resources {auth1.currentUser?.uid}
+            </Text>
+          </View>
+
+          <View style={styles.form}>
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Student Registration Number</Text>
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                keyboardType="numeric"
+                onChangeText={regNo => setForm({ ...form, regNo })}
+                placeholder="Enter Registration Number"
+                placeholderTextColor="#6b7280"
+                style={styles.inputControl}
+                value={form.regNo}
+              />
+            </View>
+
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Password</Text>
+              <TextInput
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                onChangeText={password => setForm({ ...form, password })}
+                placeholder="********"
+                placeholderTextColor="#6b7280"
+                style={styles.inputControl}
+                secureTextEntry={true}
+                value={form.password} />
+            </View>
+
+            {errorMessage && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+
+            <View style={styles.formAction}>
+              <TouchableOpacity onPress={handleLogin}>
+                <View style={styles.btn}>
+                  {isLoading ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text style={styles.btnText}>Sign in</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={() => { navigation.navigate('FacLogin') }}>
+              <Text style={styles.formLink}>Faculty Portal</Text>
+            </TouchableOpacity>
+          </View>
+      </ScrollView>
+      <Text style={{ textAlign: 'center', marginTop: 10 }} >
+        Didn't have an account? <Text style={{ textDecorationLine: 'underline', fontWeight: '500' }} >Signup</Text>
+      </Text>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:'red',
-  }
+  container: {
+    flex: 1,
+    backgroundColor: 'red',
+    paddingTop: 30,
+    paddingBottom: 15
+  },
+  ScrollViewStyle: {
+    // paddingVertical: 24,
+    flexGrow: 1,
+    // flexShrink: 1,
+    // flexBasis: 0,
+  },
+  title: {
+    fontSize: 31,
+    fontWeight: '700',
+    color: '#1D2A32',
+    marginBottom: 6,
+  },
+  subtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#929292',
+  },
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 36,
+  },
+  headerImg: {
+    width: 80,
+    height: 80,
+    alignSelf: 'center',
+    marginBottom: 36,
+  },
+  form: {
+    marginBottom: 24,
+    paddingHorizontal: 24,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+  },
+  formAction: {
+    marginTop: 4,
+    marginBottom: 16,
+  },
+  formLink: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#075eec',
+    textAlign: 'center',
+  },
+  formFooter: {
+    paddingVertical: 24,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+    textAlign: 'center',
+    letterSpacing: 0.15,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8,
+  },
+  inputControl: {
+    height: 50,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222',
+    borderWidth: 1,
+    borderColor: '#C9D3DB',
+    borderStyle: 'solid',
+  },
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    backgroundColor: '#075eec',
+    borderColor: '#075eec',
+  },
+  btnText: {
+    fontSize: 18,
+    lineHeight: 26,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#ff3b30',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
 });
