@@ -52,7 +52,7 @@ export default function App() {
         {/* Splash Screen */}
         <Stack.Screen
           name="Splash"
-          component={SplashScreen}
+          component={SemesterClass}
           options={{ headerShown: false }}
         />
 

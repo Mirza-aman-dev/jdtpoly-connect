@@ -536,93 +536,93 @@
 //     return true;
 //   };
 
-//   const handleSignup = async () => {
-//     if (!validateForm()) return;
+  // const handleSignup = async () => {
+  //   if (!validateForm()) return;
 
-//     // Append @jdtpoly.com to the registration number
-//     const email = form.regNum + '@jdtpoly.com';
+  //   // Append @jdtpoly.com to the registration number
+  //   const email = form.regNum + '@jdtpoly.com';
 
-//     let _feePerYear;
+  //   let _feePerYear;
 
-//     if (form.quota === 'management') {
-//       _feePerYear = 75000;
-//     } else if (form.quota === 'merit') {
-//       _feePerYear = 28000;
-//     } else if (form.quota === 'orphanage') {
-//       _feePerYear = 0;
-//     } else if (form.quota === 'Other') {
-//       _feePerYear = 'other';
-//     }
+  //   if (form.quota === 'management') {
+  //     _feePerYear = 75000;
+  //   } else if (form.quota === 'merit') {
+  //     _feePerYear = 28000;
+  //   } else if (form.quota === 'orphanage') {
+  //     _feePerYear = 0;
+  //   } else if (form.quota === 'Other') {
+  //     _feePerYear = 'other';
+  //   }
 
-//     const returnDept = () => {
-//       switch (form.dept) {
-//         case 'Computer Engineering':
-//           return 'ComputerEngineering';
-//         case 'Computer Hardware Engineering':
-//           return 'ComputerHardwareEngineering';
-//         case 'Civil Engineering':
-//           return 'CivilEngineering';
-//         case 'Architecture':
-//           return 'Architecture';
-//         case 'Electrical & Electronics Engineering':
-//           return 'ElectricalAndElectronicsEngineering';
-//         case 'Electronics Engineering':
-//           return 'ElectronicsEngineering';
-//         case 'Automobile Engineering':
-//           return 'AutomobileEngineering';
-//         case 'Mechanical Engineering':
-//           return 'MechanicalEngineering';
-//         default:
-//           return ''; // Return an empty string for unmatched cases
-//       }
-//     };
+  //   const returnDept = () => {
+  //     switch (form.dept) {
+  //       case 'Computer Engineering':
+  //         return 'ComputerEngineering';
+  //       case 'Computer Hardware Engineering':
+  //         return 'ComputerHardwareEngineering';
+  //       case 'Civil Engineering':
+  //         return 'CivilEngineering';
+  //       case 'Architecture':
+  //         return 'Architecture';
+  //       case 'Electrical & Electronics Engineering':
+  //         return 'ElectricalAndElectronicsEngineering';
+  //       case 'Electronics Engineering':
+  //         return 'ElectronicsEngineering';
+  //       case 'Automobile Engineering':
+  //         return 'AutomobileEngineering';
+  //       case 'Mechanical Engineering':
+  //         return 'MechanicalEngineering';
+  //       default:
+  //         return ''; // Return an empty string for unmatched cases
+  //     }
+  //   };
 
-//     try {
-//       // Create user with email and password
-//       const userCredential = await createUserWithEmailAndPassword(auth, email, form.password);
-//       const user = userCredential.user;
+  //   try {
+  //     // Create user with email and password
+  //     const userCredential = await createUserWithEmailAndPassword(auth, email, form.password);
+  //     const user = userCredential.user;
 
-//       let _dept = returnDept();
-//       let _sem = `semester${form.sem}`;
+  //     let _dept = returnDept();
+  //     let _sem = `semester${form.sem}`;
 
-//       // Store user details in Firestore
-//       await setDoc(doc(db, 'students', user.uid), {
-//         fullName: form.fullName,
-//         dob: form.dob,
-//         dept: form.dept,
-//         sem: form.sem,
-//         rollNumber: form.rollNumber,
-//         regNum: form.regNum,
-//         admissionNumber: form.admissionNumber,
-//         admissionType: form.quota,
-//         role: 'inactive',
-//         feeStruct: _feePerYear
-//       });
+  //     // Store user details in Firestore
+  //     await setDoc(doc(db, 'students', user.uid), {
+  //       fullName: form.fullName,
+  //       dob: form.dob,
+  //       dept: form.dept,
+  //       sem: form.sem,
+  //       rollNumber: form.rollNumber,
+  //       regNum: form.regNum,
+  //       admissionNumber: form.admissionNumber,
+  //       admissionType: form.quota,
+  //       role: 'inactive',
+  //       feeStruct: _feePerYear
+  //     });
 
-//       const docRef = doc(db, `${_dept}_${_sem}`, user.uid);
-//       const data = {
-//         fullName: form.fullName,
-//         dob: form.dob,
-//         dept: form.dept,
-//         sem: form.sem,
-//         rollNumber: form.rollNumber,
-//         regNum: form.regNum,
-//         admissionNumber: form.admissionNumber,
-//         admissionType: form.quota,
-//         uid: user.uid,
-//         feeStruct: _feePerYear,
-//       };
+  //     const docRef = doc(db, `${_dept}_${_sem}`, user.uid);
+  //     const data = {
+  //       fullName: form.fullName,
+  //       dob: form.dob,
+  //       dept: form.dept,
+  //       sem: form.sem,
+  //       rollNumber: form.rollNumber,
+  //       regNum: form.regNum,
+  //       admissionNumber: form.admissionNumber,
+  //       admissionType: form.quota,
+  //       uid: user.uid,
+  //       feeStruct: _feePerYear,
+  //     };
 
-//       // Save the data to Firestore
-//       await setDoc(docRef, data);
+  //     // Save the data to Firestore
+  //     await setDoc(docRef, data);
 
-//       // On successful signup, navigate to the home or login screen
-//       Alert.alert('Success', 'Account created successfully');
-//       navigation.navigate('Wait'); // or 'Home'
-//     } catch (error) {
-//       console.error('Error signing up:', error);
-//       Alert.alert('Signup Error', error.message);
-//     }
+  //     // On successful signup, navigate to the home or login screen
+  //     Alert.alert('Success', 'Account created successfully');
+  //     navigation.navigate('Wait'); // or 'Home'
+  //   } catch (error) {
+  //     console.error('Error signing up:', error);
+  //     Alert.alert('Signup Error', error.message);
+  //   }
 //   };
 
 
@@ -1049,7 +1049,9 @@ export default function SignupScreen({ navigation }) {
   const handleSignup = async () => {
     if (!validateForm()) return;
 
+    // Append @jdtpoly.com to the registration number
     const email = form.regNum + '@jdtpoly.com';
+
     let _feePerYear;
 
     if (form.quota === 'management') {
@@ -1062,10 +1064,38 @@ export default function SignupScreen({ navigation }) {
       _feePerYear = 'other';
     }
 
+    const returnDept = () => {
+      switch (form.dept) {
+        case 'Computer Engineering':
+          return 'ComputerEngineering';
+        case 'Computer Hardware Engineering':
+          return 'ComputerHardwareEngineering';
+        case 'Civil Engineering':
+          return 'CivilEngineering';
+        case 'Architecture':
+          return 'Architecture';
+        case 'Electrical & Electronics Engineering':
+          return 'ElectricalAndElectronicsEngineering';
+        case 'Electronics Engineering':
+          return 'ElectronicsEngineering';
+        case 'Automobile Engineering':
+          return 'AutomobileEngineering';
+        case 'Mechanical Engineering':
+          return 'MechanicalEngineering';
+        default:
+          return ''; // Return an empty string for unmatched cases
+      }
+    };
+
     try {
+      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, form.password);
       const user = userCredential.user;
 
+      let _dept = returnDept();
+      let _sem = `semester${form.sem}`;
+
+      // Store user details in Firestore
       await setDoc(doc(db, 'students', user.uid), {
         fullName: form.fullName,
         dob: form.dob,
@@ -1076,16 +1106,33 @@ export default function SignupScreen({ navigation }) {
         admissionNumber: form.admissionNumber,
         admissionType: form.quota,
         role: 'inactive',
-        feeStruct: _feePerYear,
+        feeStruct: _feePerYear
       });
 
+      const docRef = doc(db, `${_dept}_${_sem}`, user.uid);
+      const data = {
+        fullName: form.fullName,
+        dob: form.dob,
+        dept: form.dept,
+        sem: form.sem,
+        rollNumber: form.rollNumber,
+        regNum: form.regNum,
+        admissionNumber: form.admissionNumber,
+        admissionType: form.quota,
+        uid: user.uid,
+        feeStruct: _feePerYear,
+      };
+
+      // Save the data to Firestore
+      await setDoc(docRef, data);
+
+      // On successful signup, navigate to the home or login screen
       Alert.alert('Success', 'Account created successfully');
       navigation.navigate('Wait'); // or 'Home'
     } catch (error) {
       console.error('Error signing up:', error);
       Alert.alert('Signup Error', error.message);
-    }
-  };
+    }}
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
@@ -1133,7 +1180,7 @@ export default function SignupScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 clearButtonMode="while-editing"
-                keyboardType="numeric"
+                keyboardType="number-pad"
                 onChangeText={(regNum) => setForm({ ...form, regNum })}
                 placeholder="Enter Registration Number"
                 placeholderTextColor="#6b7280"
@@ -1149,9 +1196,9 @@ export default function SignupScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 clearButtonMode="while-editing"
-                keyboardType="numeric"
+                keyboardType="number-pad"
                 onChangeText={(rollNumber) => setForm({ ...form, rollNumber })}
-                placeholder="Enter Registration Number"
+                placeholder="Enter Roll Number"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
                 value={form.rollNumber}
@@ -1165,27 +1212,29 @@ export default function SignupScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 clearButtonMode="while-editing"
-                keyboardType="numeric"
+                keyboardType="number-pad"
                 onChangeText={(admissionNumber) => setForm({ ...form, admissionNumber })}
-                placeholder="Enter Registration Number"
+                placeholder="Enter Admission Number"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
                 value={form.admissionNumber}
               />
             </View>
 
+            {/* Full Name */}
             <View style={styles.input}>
-              <Text style={styles.inputLabel}>DOB {date.toLocaleDateString()}   </Text>
-              <Button onPress={showDatepicker} title="Select Date" />
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode="date"
-                  display="default"
-                  onChange={onChange}
-                />
-              )}
+              <Text style={styles.inputLabel}>DOB</Text>
+              <TextInput
+                autoCapitalize="words"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                keyboardType="default"
+                onChangeText={(dob) => setForm({ ...form, dob })}
+                placeholder="DD/MM/YYYY"
+                placeholderTextColor="#6b7280"
+                style={styles.inputControl}
+                value={form.dob}
+              />
             </View>
 
             {/* Admission Type */}
@@ -1222,7 +1271,7 @@ export default function SignupScreen({ navigation }) {
                 onPress={() => setModalVisible3(true)}
               >
                 <Text style={[styles.inputText, { color: form.sem ? '#222' : '#6b7280' }]}>
-                  {form.sem || "Select Department"}
+                  {form.sem || "Select Semester"}
                 </Text>
               </TouchableOpacity>
             </View>

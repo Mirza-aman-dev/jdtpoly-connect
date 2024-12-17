@@ -37,11 +37,11 @@ export default function FacLoginScreen({ navigation }) {
     if (!validateInput()) return; // If input is invalid, return early
     setIsLoading(true);
     setErrorMessage('');
-  
+
     try {
       const email = `${form.regNo}@gmail.com`;
       console.log(`email id is ${email}`);
-  
+
       const userCredential = await signInWithEmailAndPassword(auth, email, form.password);
       setIsLoading(false);  // Stop loading once login is successful
       console.log('User logged in', userCredential.user);
@@ -56,11 +56,11 @@ export default function FacLoginScreen({ navigation }) {
       }
     }
   };
-  
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
-      <ScrollView style={styles.container}> {/* Replaced KeyboardAwareScrollView with ScrollView */}
+      <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image
             alt="App Logo"

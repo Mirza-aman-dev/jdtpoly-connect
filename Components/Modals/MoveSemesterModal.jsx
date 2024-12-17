@@ -34,11 +34,14 @@ const MoveSemesterModal = ({ ModalOpen, setModalOpen, onPress, isSem6 }) => {
                                 <TouchableOpacity style={styles.button} onPress={() => onPress('semester5')}>
                                     <Text style={{ color: 'white' }}>Semester 5</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.button} onPress={() => onPress('semester5')}>
+                                <TouchableOpacity style={styles.button} onPress={() => onPress('semester6')}>
                                     <Text style={{ color: 'white' }}>Semester 6</Text>
                                 </TouchableOpacity>
                             </>
                     }
+                    <TouchableOpacity style={styles.button} onPress={() => onPress('semester5')}>
+                                    <Text style={{ color: 'white' }}>Semester 5</Text>
+                                </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonP} onPress={() => handleRemove()}>
                         <Text style={{ color: 'white' }}>Pass Out</Text>
                     </TouchableOpacity>

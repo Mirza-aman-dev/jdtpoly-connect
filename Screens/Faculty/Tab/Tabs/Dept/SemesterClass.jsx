@@ -21,13 +21,15 @@ import Animated, {
 import { db } from '../../../../../Backend/Firebase/config'
 import { collection, getDocs, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import MoveSemesterModal from '../../../../../Components/Modals/MoveSemesterModal';
+import SubjectsModal from '../../../../../Components/Modals/SubjectsModal';
 
 export default function SemesterClass({ route, navigation }) {
 
-    const { dept, sem } = route.params;
-    // const dept ='ComputerEngieering' ,sem = 'semester6'
+    // const { dept, sem } = route.params;
+    const dept = 'ComputerEngineering', sem = 'semester4'
 
     const [Data, setData] = useState([]);
+    const [SubjectModal, setSubjectModal] = useState(false);
 
     const fetchComputerEngineeringSemester6Data = async () => {
         try {
@@ -42,11 +44,38 @@ export default function SemesterClass({ route, navigation }) {
                 id: doc.id,
                 ...doc.data(),
             }));
-            console.log(final_hook);
+            console.log(usersList);
             setData(usersList);
             return usersList;  // Returns the data from the collection
         } catch (error) {
             console.error("Error fetching documents: ", error);
+        }
+    };
+
+    const addSubject = async () => {
+        try {
+            // Reference to the ComputerEngineering_semester4 document
+            const semesterRef = doc(db, 'ComputerEngineering_semester4', 'Subject');
+
+            // Now, the 'Subject' collection will be a subcollection of the above document
+            const subjectRef = collection(semesterRef, 'Subjects'); // Now this is a subcollection under the semester document
+
+            // Create a new document for the subject
+            const subjectDocRef = doc(subjectRef, 'subject1'); // Specify the subject name (or ID) here
+
+            // Subject data
+            const subjectData = {
+                name: 'subject 1', // Add more data as needed
+                description: 'Description of subject 1',
+                createdAt: new Date(),
+            };
+
+            // Set the document data
+            await setDoc(subjectDocRef, subjectData);
+
+            console.log('Subject added successfully!');
+        } catch (error) {
+            console.error('Error adding subject:', error);
         }
     };
 
@@ -60,7 +89,8 @@ export default function SemesterClass({ route, navigation }) {
         { id: '3', name: 'Exams', icon: 'clipboard', color: '#168fc2' },
         { id: '4', name: 'Assignment', icon: 'edit', color: '#f2a900' },
         { id: '5', name: 'Leaderboard', icon: 'trophy', color: '#ff5722' },
-        { id: '6', name: 'Move', icon: 'caravan', color: '#ff5722', click: () => { setModalOpen(true) } },
+        { id: '6', name: 'Subjects', icon: 'book', color: '#12c7ed', click: () => { setSubjectModal(true) } },
+        { id: '7', name: 'Move', icon: 'caravan', color: '#075eec', click: () => { setModalOpen(true) } },
     ];
 
     const sampleStData = [
@@ -165,7 +195,7 @@ export default function SemesterClass({ route, navigation }) {
             // Wait for all delete operations to complete
             await Promise.all(deletePromises);
             setModalOpen(false)
-            navigation.navigate('FacSc',{dept:dept,sem:final_dest_hook})
+            navigation.navigate('FacSc', { dept: dept, sem: final_dest_hook })
             console.log('All documents deleted from the source collection.');
         } catch (error) {
             console.error('Error moving and deleting documents:', error);
@@ -195,8 +225,9 @@ export default function SemesterClass({ route, navigation }) {
                 keyExtractor={(item) => item.id}
                 renderItem={renderStudents}
                 contentContainerStyle={styles.container2}
-            />
+            /> 
             <MoveSemesterModal ModalOpen={ModalOpen} setModalOpen={setModalOpen} isSem6={sem == 'semester6' ? true : false} onPress={moveSem} />
+            <SubjectsModal visible={SubjectModal} setVisible={setSubjectModal} data={'s'} />
         </SafeAreaView>
     );
 }
